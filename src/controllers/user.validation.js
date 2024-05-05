@@ -6,7 +6,7 @@ import {
 } from "@crispengari/regex-validator";
 import { ValidationException } from "../utils/validation.exception.js";
 import { uploadOnCloudinary } from "./../utils/cloudinary.js";
-import { errorHandler } from "../constant/global.error.js";
+import { errorHandler } from "../constant/global.error.handler.js";
 
 async function uploadImages(avatarLocalPath, coverImageLocalPath) {
   if (!avatarLocalPath) {
@@ -25,11 +25,6 @@ async function uploadImages(avatarLocalPath, coverImageLocalPath) {
 export const validateUserdetails = async (req) => {
   const { fullName, email, username, password } = req.body;
 
-  // if (
-  //   [fullName, email, username, password].some((field) => field?.trim() === "")
-  // ) {
-  //   throw new ValidationException(400, errorHandler.user.emptyAllFields);
-  // }
   const hashtype = "M8L1U1D1S1";
   if (!isValidEmail(email, hashtype)) {
     throw new ValidationException(400, errorHandler.user.invalidEmail);
