@@ -78,11 +78,11 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 
   const user = await User.findOne({
-    $or: [{ username, email }],
+    username,
   });
 
   if (!user) {
-    throw new validateUserdetails(404, errorHandler.user.userNotExist);
+    throw new ValidationException(404, errorHandler.user.userNotExist);
   }
   const ispaswordValid = await user.isPasswordCorrect(password);
   if (!ispaswordValid) {
@@ -133,7 +133,7 @@ const logOut = asyncHandler(async (req, res) => {
 const refreshAccessToken = asyncHandler(async (req, res) => {
   try {
     const incomingRefreshToken =
-      req.cookie.refreshToken || req.body.refreshToken;
+      req.cookies.refreshToken || req.body.refreshToken;
 
     if (!incomingRefreshToken) {
       throw new ValidationException(401, "unauthorized request");

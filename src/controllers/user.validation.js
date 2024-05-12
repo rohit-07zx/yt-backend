@@ -24,14 +24,13 @@ async function uploadImages(avatarLocalPath, coverImageLocalPath) {
 
 export const validateUserdetails = async (req) => {
   const { fullName, email, username, password } = req.body;
-
   const hashtype = "M8L1U1D1S1";
-  if (!isValidEmail(email, hashtype)) {
+
+  if (!isValidEmail(email)) {
     throw new ValidationException(400, errorHandler.user.invalidEmail);
-  } else if (!isValidUsername(username, hashtype)) {
+  } else if (!isValidPassword(username, passwordSalts.M8L1D1)) {
     throw new ValidationException(400, errorHandler.user.invalidUsername);
-  } else if (isValidPassword(password, passwordSalts.M8L1D1)) {
-    console.log(password);
+  } else if (!isValidPassword(password, passwordSalts.M8L1D1)) {
     throw new ValidationException(400, errorHandler.user.invalidPassword);
   }
 
