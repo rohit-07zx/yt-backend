@@ -4,11 +4,12 @@ import { User } from "../models/users.model.js";
 import { ValidationException } from "../utils/validation.exception.js";
 import { validateUserdetails } from "../controllers/user.validation.js";
 import { errorHandler } from "../constant/global.error.handler.js";
+import { constant } from "../constant/global.constant.js";
 
 const verifyJwt = asyncHandler(async (req, _, next) => {
   //try {
   const token =
-    req.cookie?.accessToken ||
+    req.cookies?.accessToken ||
     req?.header("Authrization")?.replace("Bearer ", "");
 
   if (!token) {
@@ -18,7 +19,7 @@ const verifyJwt = asyncHandler(async (req, _, next) => {
   const decodeToken = await jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 
   const user = await User.findById(decodeToken._id).select(
-    user_private_credentials
+    constant.user_private_credentials
   );
   if (!user) {
     throw new ValidationException(401, " invalid access token");
